@@ -3,8 +3,10 @@ struct Rectangle {
     h: f64
 }
 
-fn area(rect: Rectangle) -> f64 {
-    rect.w * rect.h
+impl Rectangle {
+    fn area(&self) -> f64 {
+        self.w * self.h
+    }
 }
 
 
@@ -14,5 +16,5 @@ fn main() {
         h: 3.0,
     };
 
-    println!("{}", area(r));
+    println!("{}", r.area());
 }

@@ -1,6 +1,7 @@
 use std::env;
 use std::fs;
 use std::process;
+use std::error::Error;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -12,14 +13,12 @@ fn main() {
 
     println!("Searching for {} in file {}", config.query, config.filename);
 
-    let content = fs::read_to_string(config.filename)
-        .expect("Something wrong reading the file.");
-
-    println!("Content in file:");
-    println!("{}", content);
+    if let Err(e) = run(config) {
+        println!("Problem parsing arguments: {}", e);
+        process::exit(1);
+    };
 }
 
-#[allow(dead_code)]
 struct Config {
     query: String,
     filename: String,
@@ -35,4 +34,13 @@ impl Config {
         let filename = args[2].clone();
         Ok(Config {query, filename})
     }
+}
+
+fn run(config: Config) -> Result<(), Box<dyn Error>> {
+    let content = fs::read_to_string(&config.filename)?;
+
+    println!("Content in {}:", config.filename);
+    println!("{}", content);
+
+    Ok(())
 }

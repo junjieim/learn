@@ -6,15 +6,11 @@ use minigrep::Config;
 fn main() {
     let args: Vec<String> = env::args().collect();
     
-    let config = Config::new(&args).unwrap_or_else(|err| {
-        println!("Problem parsing arguments: {}", err);
+    let config = Config::new(&args).unwrap_or_else(|_| {
         process::exit(1);
     });
 
-    println!("Searching for {} in file {}", config.query, config.filename);
-
-    if let Err(e) = minigrep::run(config) {
-        println!("Problem parsing arguments: {}", e);
+    if let Err(_) = minigrep::run(config) {
         process::exit(1);
     };
 }

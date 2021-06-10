@@ -4,13 +4,15 @@ use std::process;
 use minigrep::Config;
 
 fn main() {
-    let args: Vec<String> = env::args().collect();
+    // let args: Vec<String> = env::args().collect();
     
-    let config = Config::new(&args).unwrap_or_else(|_| {
+    let config = Config::new(env::args()).unwrap_or_else(|e| {
+        eprintln!("Config error: {}", e);
         process::exit(1);
     });
 
-    if let Err(_) = minigrep::run(config) {
+    if let Err(e) = minigrep::run(config) {
+        eprintln!("Search error: {}", e);
         process::exit(1);
     };
 }
